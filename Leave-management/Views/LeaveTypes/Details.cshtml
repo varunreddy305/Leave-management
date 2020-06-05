@@ -25,6 +25,13 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" style="color:black" class="p-2" asp-route-id="@Model.Id">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+    </a>
+    <a asp-action="Index" class="btn btn-link">
+        <div style="display:flex">
+            <div class="mr-2"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+            <div>Back to List</div>
+        </div>
+    </a>
 </div>
