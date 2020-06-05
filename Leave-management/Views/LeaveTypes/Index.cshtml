@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Leave_management.Models.DetailsLeaveTypeViewModel>
+﻿@model IEnumerable<Leave_management.Models.LeaveTypeViewModel>
 
 @{
     ViewData["Title"] = "Leave Type";
@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="LeaveTypes" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
