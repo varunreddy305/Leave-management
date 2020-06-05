@@ -9,7 +9,7 @@
 <p>
     <a asp-controller="LeaveTypes" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="tableData" class="table">
     <thead>
         <tr>
             <th>
@@ -39,3 +39,11 @@
 }
     </tbody>
 </table>
+
+@section Scripts{ 
+<script>
+    $(document).ready(function () {
+        $('#tableData').DataTable();
+    });
+</script>
+}
