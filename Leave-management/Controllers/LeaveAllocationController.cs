@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Leave_management.Controllers
 {
@@ -72,8 +73,9 @@ namespace Leave_management.Controllers
         // GET: LeaveAllocationController/Details/5
         public ActionResult Details(string id)
         {
-            var employee = _userManager.FindByIdAsync(id).Result;
-            var model = _map.Map<EmployeeViewModel>(employee);
+            var employee = _map.Map<EmployeeViewModel>(_userManager.FindByIdAsync(id).Result);
+            var allocations = _map.Map<List<LeaveAllocationViewModel>>(_leaveAllocationRepository.GetLeaveAllocationsByEmployee(id));
+            var model = new ViewAllocationVM { Employee = employee, LeaveAllocations = allocations };
             return View(model);
         }
 
@@ -101,21 +103,36 @@ namespace Leave_management.Controllers
         // GET: LeaveAllocationController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var leaveAllocations = _map.Map<EditLeaveAllocationViewModel>(_leaveAllocationRepository.FindById(id));
+            return View(leaveAllocations);
         }
 
         // POST: LeaveAllocationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EditLeaveAllocationViewModel model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("", "Something went wrong");
+                    return View(model);
+                }
+                var record = _leaveAllocationRepository.FindById(model.Id);
+                record.NumberOfDays = model.NumberOfDays;
+                var isSucess = _leaveAllocationRepository.Update(record);
+                if (!isSucess)
+                {
+                    ModelState.AddModelError("", "Error while saving");
+                    return View(model);
+                }
+                return RedirectToAction(nameof(Details),new { id = model.EmployeeId});
             }
             catch
             {
-                return View();
+                ModelState.AddModelError("", "Something went wrong");
+                return View(model);
             }
         }
 

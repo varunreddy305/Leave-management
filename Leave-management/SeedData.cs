@@ -28,17 +28,17 @@ namespace Leave_management
             }
         }
 
-        private static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        private async static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             if (!roleManager.RoleExistsAsync("Administrator").Result)
             {
                 var role = new IdentityRole { Name = "Administrator" };
-                var result = roleManager.CreateAsync(role).Result;
+                await roleManager.CreateAsync(role);
             }
             if (!roleManager.RoleExistsAsync("Employee").Result)
             {
                 var role = new IdentityRole { Name = "Employee" };
-                var result = roleManager.CreateAsync(role).Result;
+                await roleManager.CreateAsync(role);
             }
         }
     }

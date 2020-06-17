@@ -1,5 +1,6 @@
 ﻿using Leave_management.Contracts;
 using Leave_management.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Leave_management.Repository
         public bool CheckAllocation(int leaveTypeId, string employeeId)
         {
             var period = DateTime.Now.Year;
-            IEnumerable<LeaveAllocation> result = from leaveAllocation in _db.LeaveAllocations.ToList()
+            IEnumerable<LeaveAllocation> result = from leaveAllocation in _db.LeaveAllocations.Include(x=>x.LeaveType).Include(x=>x.Employee).ToList()
                                                   where (leaveAllocation.EmployeeId == employeeId && leaveAllocation.LeaveTypeId == leaveTypeId && leaveAllocation.Period == period)
                                                   select leaveAllocation;
 
@@ -40,12 +41,25 @@ namespace Leave_management.Repository
 
         public ICollection<LeaveAllocation> FindAll()
         {
-            return _db.LeaveAllocations.ToList();
+            return _db.LeaveAllocations.Include(x=>x.LeaveType).Include(x=>x.Employee).ToList();
         }
 
         public LeaveAllocation FindById(int id)
         {
-            return _db.LeaveAllocations.FirstOrDefault(x => x.Id == id);
+            return _db.LeaveAllocations
+                .Include(x=>x.Employee)
+                .Include(x=>x.LeaveType)
+                .FirstOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<LeaveAllocation> GetLeaveAllocationsByEmployee(string id)
+        {
+            var period = DateTime.Now.Year;
+            IEnumerable<LeaveAllocation> result = from leaveAllocation in _db.LeaveAllocations.Include(x=>x.LeaveType).Include(x=>x.Employee).ToList()
+                                                  where (leaveAllocation.EmployeeId == id && leaveAllocation.Period == period) 
+                                                  select leaveAllocation;
+            return result;
+            //return FindAll().Where(x => x.EmployeeId == id).ToList();
         }
 
         public bool isExists(int id)
