@@ -25,5 +25,6 @@ namespace Leave_management.Data
         [ForeignKey("ApprovedById")]
         public Employee ApprovedBy { get; set; }
         public string ApprovedById { get; set; }
+        public bool? IsCancelled { get; set; }
     }
 }

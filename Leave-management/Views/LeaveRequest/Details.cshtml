@@ -1,0 +1,81 @@
+﻿@model Leave_management.Models.LeaveRequestViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@if (Model.Approved == null)
+{
+    <div class="alert alert-warning" role="alert">
+        <h4>Pending Approval</h4>
+        <p>
+            <strong>Employee Name:</strong> @Model.RequestingEmployee.FirstName, @Model.RequestingEmployee.LastName
+        </p>
+        <hr />
+        <p>
+            @Html.DisplayNameFor(model => model.DateRequested) - @Html.DisplayFor(model => model.DateRequested)
+        </p>
+    </div>
+}
+else if (Model.Approved == true)
+{
+    <div class="alert alert-success" role="alert">
+        <h4>Approved by @Model.ApprovedBy.FirstName, @Model.ApprovedBy.LastName</h4>
+        <p>
+            <strong>Employee Name:</strong> @Model.RequestingEmployee.FirstName, @Model.RequestingEmployee.LastName
+        </p>
+        <hr />
+        <p>
+            @Html.DisplayNameFor(model => model.DateRequested) - @Html.DisplayFor(model => model.DateRequested)
+        </p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <h4>Rejected by @Model.ApprovedBy.FirstName, @Model.ApprovedBy.LastName</h4>
+        <p>
+            <strong>Employee Name:</strong> @Model.RequestingEmployee.FirstName, @Model.RequestingEmployee.LastName
+        </p>
+        <hr />
+        <p>
+            @Html.DisplayNameFor(model => model.DateRequested) - @Html.DisplayFor(model => model.DateRequested)
+        </p>
+    </div>
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LeaveType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LeaveType.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (@Model.Approved == null)
+    {
+        <a asp-action="Approve" class="btn btn-success" asp-route-id="@Model.Id">
+            <i class="fa fa-check" aria-hidden="true">Approve</i>
+        </a>
+        <a asp-action="Reject" class="btn btn-danger" asp-route-id="@Model.Id">
+            <i class="fa fa-remove" aria-hidden="true">Reject</i>
+        </a>
+    }
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to List</a>
+</div>

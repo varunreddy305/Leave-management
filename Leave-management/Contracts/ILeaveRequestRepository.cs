@@ -8,5 +8,6 @@ namespace Leave_management.Contracts
 {
     public interface ILeaveRequestRepository : IRepositoryBase<LeaveRequest>
     {
+        ICollection<LeaveRequest> GetLeaveRequestOfAnEmployee(string id);
     }
 }

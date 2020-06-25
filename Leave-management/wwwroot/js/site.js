@@ -6,3 +6,12 @@
 $(document).ready(function () {
     $('#tableData').DataTable();
 });
+
+
+$(function () {
+    $("#datePicker1").datepicker();
+});
+
+$(function () {
+    $("#datePicker2").datepicker();
+});
