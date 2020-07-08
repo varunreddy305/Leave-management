@@ -9,13 +9,13 @@ namespace Leave_management
 {
     public static class SeedData
     {
-        public static void Seed(UserManager<Employee> userManager, RoleManager<IdentityRole> roleManager)
+        public async static void Seed(UserManager<Employee> userManager, RoleManager<IdentityRole> roleManager)
         {
-            SeedRoles(roleManager);
-            SeedUsers(userManager);
+            await SeedRoles(roleManager);
+            await SeedUsers(userManager);
         }
 
-        private async static void SeedUsers(UserManager<Employee> userManager)
+        private async static Task SeedUsers(UserManager<Employee> userManager)
         {
             if(userManager.FindByNameAsync("admin").Result == null)
             {
@@ -28,7 +28,7 @@ namespace Leave_management
             }
         }
 
-        private async static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        private async static Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             if (!roleManager.RoleExistsAsync("Administrator").Result)
             {
