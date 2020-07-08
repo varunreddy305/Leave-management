@@ -1,0 +1,118 @@
+﻿@model AdminLeaveRequestVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br />
+<div class="row">
+    <div class="col-md-3">
+            <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fas fa-clipboard-list"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">@Model.TotalRequest</span>
+                    <span class="info-box-number">@Html.DisplayNameFor(model => model.TotalRequest)</span>
+                </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.ApprovedRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.ApprovedRequest)</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning"><i class="fas fa-exclamation-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.PendingRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.PendingRequest)</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-danger"><i class="fas fa-times-circle"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">@Model.RejectedRequest</span>
+                <span class="info-box-number">@Html.DisplayNameFor(model => model.RejectedRequest)</span>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<hr />
+<table id="tableData" class="table">
+    <thead>
+        <tr>
+            <th>
+                Employee Name
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Leave Type
+            </th>
+            <th>
+                Date Requested
+            </th>
+            <th>
+                Approved Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestingEmployee.FirstName), @Html.DisplayFor(modelItem => item.RequestingEmployee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequested)
+                </td>
+                <td>
+                    @if (item.Approved == true)
+                    {
+                        <span class="badge badge-success">Approved</span>
+                    }
+                    else if (item.Approved == false)
+                    {
+                        <span class="badge badge-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Pending</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" class="btn btn-outline-primary" asp-route-id="@item.Id">
+                        <i class="fa fa-file"></i>
+                        Review
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

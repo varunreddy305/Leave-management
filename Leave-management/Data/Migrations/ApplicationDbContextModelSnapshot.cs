@@ -38,6 +38,9 @@ namespace Leave_management.Data.Migrations
                     b.Property<int>("NumberOfDays")
                         .HasColumnType("int");
 
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -47,7 +50,7 @@ namespace Leave_management.Data.Migrations
                     b.ToTable("LeaveAllocations");
                 });
 
-            modelBuilder.Entity("Leave_management.Data.LeaveHistory", b =>
+            modelBuilder.Entity("Leave_management.Data.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,6 +72,9 @@ namespace Leave_management.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("IsCancelled")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
 
@@ -86,7 +92,7 @@ namespace Leave_management.Data.Migrations
 
                     b.HasIndex("RequestingEmployeeId");
 
-                    b.ToTable("LeaveHistories");
+                    b.ToTable("LeaveRequests");
                 });
 
             modelBuilder.Entity("Leave_management.Data.LeaveType", b =>
@@ -98,6 +104,9 @@ namespace Leave_management.Data.Migrations
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DefaultDays")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -349,7 +358,7 @@ namespace Leave_management.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Leave_management.Data.LeaveHistory", b =>
+            modelBuilder.Entity("Leave_management.Data.LeaveRequest", b =>
                 {
                     b.HasOne("Leave_management.Data.Employee", "ApprovedBy")
                         .WithMany()
